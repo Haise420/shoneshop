@@ -1,0 +1,85 @@
+{% load static %}
+<html lang="en" class="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shone Shop</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" class="css">
+</head>
+<body>
+    <div class="parent">
+        {% for proizvod in proizvodi %}
+        <div>
+            <div class="child child-1">{{ proizvod.ime }}</div>
+            <button onclick="otvoriModalDelete()">Izbrisi proizvod</button>
+        </div>
+        
+        {% endfor %}
+
+        <label for="">Napravi novi proizvod</label>
+        <button onclick="otvoriModal()">+</button>
+    </div>
+
+    <div id="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="zatvoriModal()">&times;</span>
+            <form method="post" action="">
+                <label>Dodavanje novog proizvoda</label>
+                <label for="ime">Ime</label>
+                <input name="ime" type="text">
+                <label for="deskripcija">Deskripcija</label>
+                <input name="deskripcija" type="text">
+                <label for="cena">Cena</label>
+                <input name="cena" type="number">
+                <label for="kolicina">Kolicina</label>
+                <input name="kolicina" type="number">
+
+                <input name="image" type="file">
+                <br>
+                <button>Dodaj</button>
+            </form>
+        </div>
+
+    </div>
+
+    {% for proizvod in proizvodi %}
+    <div id="modalDelete" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="zatvoriModalDelete()">&times;</span>
+            <form method="post" action="{% url 'delete_proizvod' proizvod_id=proizvod.id %}">
+                {% csrf_token %}
+                <label>Da li zaista zelis da obrises proizvod?</label>
+                <button>Potvrdi</button>
+            </form>
+        </div>
+
+    </div>
+    {% endfor %}
+
+    <script>
+        function otvoriModal() {
+            var modal = document.getElementById("modal");
+            modal.style.display = "block";
+        }
+
+        function zatvoriModal() {
+            var modal = document.getElementById("modal");
+            modal.style.display = "none";
+        }
+    </script>
+
+<script>
+    function otvoriModalDelete() {
+        var modal = document.getElementById("modalDelete");
+        modal.style.display = "block";
+    }
+
+    function zatvoriModalDelete() {
+        var modal = document.getElementById("modalDelete");
+        modal.style.display = "none";
+    }
+</script>
+
+
+</body>
+</html>
